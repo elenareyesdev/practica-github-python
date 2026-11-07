@@ -7,15 +7,18 @@ import math
 
 # Excepcion para indicar que los datos de la reserva no son validos.
 class ReservaInvalidaError(Exception):
+    """Representa los errores relacionados con los datos de la reserva."""
     pass
 
 
 # Creamos la clase que sera reserva.
 class Reserva:
+    """Permite crear, confirmar, cancelar y procesar reservas"""
 
     # Inicializamos los datos de la reserva
     def __init__(self, cliente, servicio, duracion):
-
+        """Inicializa una reserva y la verificacion de que sus datos sean correctos."""
+        
         try:
             # Hacemos la verificacion que el cliente exista
             if cliente is None:
@@ -61,8 +64,10 @@ class Reserva:
             raise ReservaInvalidaError(
                 "No fue posible crear la reserva."
             ) from error
-
+            
+# Creamos el metodo para confirmar la reserva.
     def confirmar(self):
+        """Confirma una reserva que se va a encontrar pendiente"""
 
         try:
             # Verificamos que la reserva este pendiente.
@@ -85,9 +90,9 @@ class Reserva:
 
             # Devolvemos el estado actual.
             return self.estado
-
+#Creamos el metodo para cancelar la reserva.
     def cancelar(self):
-
+        """Cancelar una reserva pendiente o confirmada"""
         try:
             # Verificamos que la reserva se pueda cancelar.
             if self.estado not in ["pendiente", "confirmada"]:
@@ -112,7 +117,7 @@ class Reserva:
 
     # Creamos el metodo para poder procesar la reserva.
     def procesar(self):
-
+        """Procesar una reserva que se encuentra confirmada"""
         try:
             # Verificaremos que la reserva este confirmada.
             if self.estado != "confirmada":
