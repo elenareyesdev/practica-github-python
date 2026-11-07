@@ -32,9 +32,19 @@ class ServicioInvalidoError(Exception):
 class ServicioNoDisponibleError(Exception):
      """se usa cuando los servicios no están disponibles."""
      pass
- 
 
-class ReservaInvalidaError(Exception):
+
+ class ReservaInvalidaError(Exception):
      """se usa cuando la reserva no se puede hacer."""
      pass
+
+
+#creamos Una clase abstracta que represente entidades generales del sistema.
+class Entidad(ABC):
+    """Clase abstracta general: es la que representa cualquier entidad del sistema."""
+
+    @abstractmethod
+    def describir(self):
+        """Cada entidad hija debe describirse."""
+        pass
 
