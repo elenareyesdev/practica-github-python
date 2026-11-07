@@ -48,3 +48,48 @@ class Entidad(ABC):
         """Cada entidad hija debe describirse."""
         pass
 
+# creamos la clase cliente con validaciones 
+class Cliente(Entidad):
+    """clase cliente con validaciones robustas y encapsulación de datos personales"""
+
+    def __init__(self, nombre, correo, telefono):
+        if not nombre.strip():
+          raise ClienteInvalidoError("El nombre no puede estar vacío")
+        if "@" not in correo:
+                  raise ClienteInvalidoError("El correo no puede estar sin el @")
+        if not telefono .isdigit():
+                  raise ClienteInvalidoError("El teléfono solo debe tener números")
+        
+        self._nombre = nombre 
+        self._correo = correo 
+        self._telefono = telefono
+
+    def obtener_nombre(self):
+          return self._nombre
+        
+
+    def describir(self):
+         return f"Cliente: {self._nombre},{self._correo}"
+    
+    
+   # Prueba 1: cliente correcto
+try:
+    cliente1 = Cliente("Elena", "elena@correo.com", "3001234567")
+    print(cliente1.describir())
+    logging.info("Cliente creado correctamente")
+
+except ClienteInvalidoError as error:
+    print("Error de cliente:", error)
+    logging.error(f"Error de cliente: {error}")
+    
+    
+    # Prueba 2: cliente incorrecto
+try:
+    cliente2 = Cliente("Elena", "elena-correo,com", "3001234567")
+    print(cliente2.describir())
+    logging.info("Cliente creado correctamente")
+
+except ClienteInvalidoError as error:
+    print("Error de cliente:", error)
+    logging.error(f"Error de cliente: {error}")
+    
