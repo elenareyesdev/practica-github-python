@@ -92,4 +92,31 @@ try:
 except ClienteInvalidoError as error:
     print("Error de cliente:", error)
     logging.error(f"Error de cliente: {error}")
+
+
+# creamos la clase abstracta servicio   
+class Servicio(Entidad):
+    """Clase abstracta: molde para todos los servicios de Software FJ."""    
+
+    def __init__(self, nombre, precio_base):
+    
+        if not nombre.strip():
+            raise ServicioInvalidoError("El nombre del servicio no puede estar vacío")
+        if precio_base <= 0:
+            raise ServicioInvalidoError("El precio debe ser mayor que cero")
+    
+        self._nombre = nombre 
+        self._precio_base =precio_base
+        self._disponible = True
+    
+    @abstractmethod
+    def calcular_costo(self, horas):
+        """Cada servicio hijo calcula su costo a su manera."""
+        pass
+
+# Prueba: Servicio es abstracta, no se puede crear directamente
+try:
+    servicio = Servicio("Prueba", 1000)
+except TypeError as error:
+    print("No se puede crear un Servicio directamente:", error)
     
