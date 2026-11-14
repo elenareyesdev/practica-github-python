@@ -200,5 +200,48 @@ try:
 except ServicioInvalidoError as error:
     print("Error de servicio:", error)
     logging.error(f"Error de servicio: {error}")
+
+
+#creamos la clase hija Asesoria   
+class Asesoria(Servicio):
+    """Servicio de Asesoria especializada"""  
+      
+    def __init__(self, nombre, precio_base, especialista):
+        super().__init__(nombre, precio_base)
+        if not especialista.strip():
+            raise ServicioInvalidoError("El nombre del especialista no puede estar vacío")
+        self._especialista = especialista
+        
+    def calcular_costo(self, horas):
+        """Costo de Asesoria: precio * horas ."""
+     
+        return self._precio_base*horas 
+ 
+    def describir(self):
+        """Describe la asesoria con su nombre y especialista."""
+        return f"Asesoria: {self._nombre}, especialista: {self._especialista}"
+    
+
+# prueba 7: Asesoria valida
+try:
+    asesoria1 = Asesoria("Python basico", 40000, "Rosa Gomez")
+    print(asesoria1.describir())
+    print("Costo por 2 horas:", asesoria1.calcular_costo(2))
+    logging.info("Asesoria creado correctamente")
+except ServicioInvalidoError as error:
+    print("Error de servicio:", error)
+    logging.error(f"Error de servicio: {error}")
+    
+    
+# prueba 8: asesoría inválida, especialista vacío
+try:
+    asesoria2 = Asesoria("Python basico", 40000," ")
+    print(asesoria2.describir())
+    print("Costo por 2 horas:", asesoria2.calcular_costo(2))
+    logging.info("Asesoria creada correctamente")
+except ServicioInvalidoError as error:
+    print("Error de servicio:", error)
+    logging.error(f"Error de servicio: {error}")
+    
             
     
