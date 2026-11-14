@@ -119,4 +119,45 @@ try:
     servicio = Servicio("Prueba", 1000)
 except TypeError as error:
     print("No se puede crear un Servicio directamente:", error)
+
+
+# creamos la clase hija sala
+class Sala(Servicio):
+    """Servicio de reserva de salas."""    
+    def __init__(self, nombre, precio_base, capacidad):
+        super().__init__(nombre, precio_base)
+        if capacidad <= 0:
+            raise ServicioInvalidoError("la capacidad debe ser mayor que cero")
+                
+        self._capacidad = capacidad
+    
+    def calcular_costo(self, horas):
+        """Costo de la sala: precio por hora por cantidad de horas."""
+        return self._precio_base*horas
+    
+    def describir(self):
+        """Describe la sala con su nombre y capacidad."""
+        return f"Sala: {self._nombre},capacidad: {self._capacidad}"
+    
+# Prueba 3: sala válida
+try:
+    sala1 = Sala("Sala Norte", 50000, 10)
+    print(sala1.describir())
+    print("Costo por 3 horas:", sala1.calcular_costo(3))
+    logging.info("Sala creada correctamente")
+except ServicioInvalidoError as error:
+    print("Error de servicio:", error)
+    logging.error(f"Error de servicio: {error}")
+    
+    # prueba 4: sala inválida
+    
+try:
+    sala2 = Sala("Sala Sur", 50000,0)
+    print(sala2.describir())
+    print("Costo por 3 horas:", sala2.calcular_costo(3))
+    logging.info("Sala creada correctamente")
+except ServicioInvalidoError as error:
+    print("Error de servicio:", error)
+    logging.error(f"Error de servicio: {error}")
+            
     
