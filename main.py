@@ -159,5 +159,46 @@ try:
 except ServicioInvalidoError as error:
     print("Error de servicio:", error)
     logging.error(f"Error de servicio: {error}")
+
+
+#creamos la clase hija Alquiler Equipo
+
+class AlquilerEquipo(Servicio):
+    """Servicio de Alquiler de Equipos"""  
+      
+    def __init__(self, nombre, precio_base, cantidad_equipos):
+        super().__init__(nombre, precio_base)
+        if cantidad_equipos <= 0:
+            raise ServicioInvalidoError("la cantidad de equipos debe ser mayor que cero")
+        self._cantidad_equipos = cantidad_equipos
+        
+    def calcular_costo(self, horas):
+         """Costo del Alquiler de Equipos: precio por hora por cantidad de Equipos."""
+         return self._precio_base*horas * self._cantidad_equipos
+     
+    def describir(self):
+         """Describe el alquiler de equipos con su nombre y cantidad de equipos."""
+         return f"AlquilerEquipo: {self._nombre}, cantidad_equipos: {self._cantidad_equipos}"
+     
+     
+# prueba 5: AlquilerEquipo
+try:
+    AlquilerEquipo1 = AlquilerEquipo("Proyector", 20000,3)
+    print(AlquilerEquipo1.describir())
+    print("Costo por 2 horas:", AlquilerEquipo1.calcular_costo(2))
+    logging.info("AlquilerEquipo creado correctamente")
+except ServicioInvalidoError as error:
+    print("Error de servicio:", error)
+    logging.error(f"Error de servicio: {error}")
+    
+# prueba 6: Alquiler invalido
+try:
+    AlquilerEquipo2 = AlquilerEquipo("Portatil", 30000,0)
+    print(AlquilerEquipo2.describir())
+    print("Costo por 2 horas:", AlquilerEquipo2.calcular_costo(2))
+    logging.info("AlquilerEquipo creado correctamente")
+except ServicioInvalidoError as error:
+    print("Error de servicio:", error)
+    logging.error(f"Error de servicio: {error}")
             
     
