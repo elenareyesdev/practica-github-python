@@ -35,7 +35,7 @@ class ServicioNoDisponibleError(Exception):
      pass
 
 
- class ReservaInvalidaError(Exception):
+class ReservaInvalidaError(Exception):
      """se usa cuando la reserva no se puede hacer."""
      pass
 
@@ -377,6 +377,160 @@ class Reserva:
         finally:
             # Registramos finalmente la finalizacion del intento de procesamiento.
             logging.info("Finalizo el intento de procesar la reserva.")
-    
-            
+
+
+# La clase para administrar nuestro sistema de software FJ.
+class SistemaSoftwareFJ:
+    """Administra los clientes, servicios y reservas del sistema."""
+
+    def __init__(self):
+        """Se crea las listas donde se guardan los datos del sistema."""
+
+        # La lista para guardar los clientes.
+        self.clientes = []
+
+        # La lista para guardar los servicios.
+        self.servicios = []
+
+        # La lista para guardar las reservas.
+        self.reservas = []
+
+    # Utilizaremos un metodo para agregar diferentes elementos al sistema.
+    def agregar(self, elemento, servicio=None, duracion=None):
+        """Agregar un cliente, servicio o reserva segun sea los argumentos."""
+
+        # Con los tres argumentos se va a crear una reserva.
+        if servicio is not None or duracion is not None:
+
+            # Hacemos la verificacion de que el cliente sea valido.
+            if not isinstance(elemento, Cliente):
+                raise ReservaInvalidaError(
+                    "El cliente de la reserva no es valido."
+                )
+
+            # Hacemos la verificacion de que el servicio sea valido.
+            if not isinstance(servicio, Servicio):
+                raise ReservaInvalidaError(
+                    "El servcio de la reserva no es valido."
+                )
+
+            # Hacemos la verificacion para que se indique la duracion.
+            if duracion is None:
+                raise ReservaInvalidaError(
+                    "Debe indicar la duracion de la reserva."
+                )
+
+            # Hacemos la creacion de la nueva reserva.
+            nueva_reserva = Reserva(elemento, servicio, duracion)
+
+            # Guardaremos la reserva en la lista.
+            self.reservas.append(nueva_reserva)
+
+            logging.info("Reserva agregada al sistema.")
+
+            return nueva_reserva
+
+        # Si sera un cliente, lo guardaremos en su lista.
+        if isinstance(elemento, Cliente):
+            self.clientes.append(elemento)
+            logging.info("El cliente agregado al sistema.")
+
+
+        # Si sera un servicio, lo guardaremos en su lista.
+        elif isinstance(elemento, Servicio):
+            self.servicios.append(elemento)
+            logging.info("El servicio sera agregado al sistema.")
+
+        # Si sera una reserva existente, la guardaremos.
+        elif isinstance(elemento, Reserva):
+            self.reservas.append(elemento)
+            logging.info("La reeserva sera agregada al sistema.")
+
+        else:
+            raise ValueError(
+                "Solo se podran agregar clientes, servicios o reservas."
+            )
+
+    # El metodo para consultar los elementos que fueron guardados.
+    def mostrar(self, tipo=None):
+        """Devuelve todas las listas o la lista que sera indicada."""
+
+        # Si son se indica el tipo, devolvera todas las listas.
+        if tipo is None:
+            return {
+                "clientes": self.clientes,
+                "servcios": self.servicios,
+                "reservas": self.reservas
+            }
+
+        # Devolvera la lista de los clientes.
+        elif tipo == "clientes":
+            return self.clientes
+
+        # Devolvera la lista de servicios
+        elif tipo == "servicios":
+            return self.servicios
+
+        # Devolvera la lista de reservas
+        elif tipo == "reservas":
+            return self.reservas
+
+        else:
+            raise ValueError("El tipo de lista no existira.")
+
+    # Ahora se desarrollara las pruebas 9 y 10: reservas.
+
+    # Ahora hacemos la creacion del administrador del sistema.
+sistema = SistemaSoftwareFJ()
+
+# Ahora agregaremos el cliente y el servicio a sus listas.
+sistema.agregar(cliente1)
+sistema.agregar(sala1)
+
+# Se hara la prueba 9: Creara una reserva valida.
+try:
+   print("\nPRUEBA 9: Reserva valida")
+
+   # Se hace la creacion de una reserva con el cliente, servicio y duracion.
+   reserva1 = sistema.agregar(cliente1, sala1, 3)
+
+   # Se confirma la reserva.
+   print("El estado de la reserva:", reserva1.confirmar())
+
+   logging.info("La prueba 9 se realizo correctamente.")
+
+except ReservaInvalidaError as error:
+    print("Error en la prueba 9.", error)
+    logging.error("Error en la prueba 9: %s", error)
+
+# Se hara la prueba 10: Creara una reserva invalida.
+try:
+    print("\nPRUEBA 10: Reserva invalida")
+
+    # Se intentara la creacion de una reserva con duracion igual a cero.
+    reserva2 = sistema.agregar(cliente1, sala1, 0)
+
+    print("Estado de la reserva:", reserva2.estado)
+
+except ReservaInvalidaError as error:
+    print("El error en la prueba 10:", error)
+    logging.error("El error en la prueba 10: %s", error)
+
+
+# Se hace la verificacion de las listas internas.
+
+print("\nRegistros del sistema")
+
+# Se consultara la cantidad de clientes.
+print("La cantidad de clientes:", len(sistema.mostrar("clientes")))
+
+# Se consultara la cantidad de servicios.
+print("La cantidad de servicios:", len(sistema.mostrar("servicios")))
+
+# Se consultara la cantidad de reservas.
+print("La cantidad de reservas:", len(sistema.mostrar("reservas")))
+
+logging.info("Se hace la verificacion de las listas finalizadas.")
+
+
     
