@@ -23,7 +23,6 @@ Universidad Nacional Abierta y a Distancia (UNAD).
 ## Estructura del repositorio
 - `main.py`: programa final
 - `versiones-anteriores/`: código de etapas previas
-- `trabajo colaborativo programacion/`: primer borrador de la clase Reserva
 - Documento de avances del trabajo (Word)
 
 ## Integrantes
